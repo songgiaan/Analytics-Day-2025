@@ -1,4 +1,3 @@
-Hello
 
 ## Load library and packages ## ----------
 library(tidyverse)
