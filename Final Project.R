@@ -180,3 +180,104 @@ Q3 <- glm(survived ~ age + gender + cancer_stage + family_history
 
 # View the model summary
 summary(Q3)
+
+## -----------------------------Plot Pie Charts -----------------------------------------##
+# Set up 2 rows and 3 columns layout for the pie charts
+
+par(mfrow = c(2,3),
+    mar = c(1,1,1,1),
+    oma = c(0,0,0,0))
+
+# Frequency 
+treatment_type_counts <- table(lungcancer$treatment_type)
+gender_counts <- table(lungcancer$gender)
+cancer_stage_counts <- table(lungcancer$cancer_stage)
+age_group_counts <- table(lungcancer$age_group)
+smoking_status_counts <- table(lungcancer$smoking_status)
+survived_counts <- table(lungcancer$survived)
+
+# Calcuate the percentage of each variable
+treatment_type_pct <- round(100*treatment_type_counts/sum(treatment_type_counts), 1)
+gender_pct <- round(100*gender_counts/sum(gender_counts), 1)
+cancer_stage_pct <- round(100*cancer_stage_counts/sum(cancer_stage_counts), 1)
+age_group_pct <- round(100*age_group_counts/sum(age_group_counts), 1)
+smoking_status_pct <- round(100*smoking_status_counts/sum(smoking_status_counts), 1)
+survived_pct <- round(100*survived_counts/sum(survived_counts), 1)
+
+# Create a vector labels
+treatment_label <- names(treatment_type_counts)
+gender_label <- names(gender_counts)
+cancer_stage_label <- names(cancer_stage_counts)
+age_group_label <- names(age_group_counts)
+smoking_status_label <- names(smoking_status_counts)
+survived_label <- names(survived_counts)
+
+
+# Create vector of colors
+combined <- c("cancer_stage", "gender", "treatment_type", "survived", "age_group", "smoking_status")
+
+colors <- rainbow(length(combined))
+
+# Create legend label
+treatment_legend_labels <- paste(treatment_label, ": ", treatment_type_pct, "%")
+gender_legend_labels <- paste(gender_label, ": ", gender_pct, "%")
+stage_legend_labels <- paste(cancer_stage_label, ": ", cancer_stage_pct, "%")
+age_legend_labels <- paste(age_group_label, ": ", age_group_pct, "%")
+smoking_legend_labels <- paste(smoking_status_label, ": ", smoking_status_pct, "%")
+survived_legend_labels <- paste(survived_label, ": ", survived_pct, "%")
+
+# Plot pie charts
+
+# Pie 1: Treatment Type
+
+pie(treatment_type_counts, 
+    labels = NA,
+    col = colors)
+
+title(main=" Treatment Types", line = -9, cex.main = 1.2)
+# Add the legend
+legend("bottom", legend = treatment_legend_labels, fill = colors, bty="n", inset = 0.1, cex = 0.8)
+
+# Pie 2: Gender
+pie(gender_counts,
+    labels = NA,
+    col = colors)
+
+title(main=" Gender", line = -9, cex.main = 1.2)
+legend ("bottom", legend = gender_legend_labels, fill = colors, bty="n", inset = 0.1, cex = 0.8)
+
+# Pie 3: Cancer stages
+pie(cancer_stage_counts,
+    labels = NA,
+    col = colors)
+
+title(main="Cancer Stages", line = -9, cex.main = 1.2)
+legend("bottom", legend = stage_legend_labels, fill = colors, bty="n", inset = 0.1, cex = 0.8)
+
+# Pie 4: Age Group
+pie(age_group_counts,
+    labels = NA,
+    col = colors)
+
+title(main="Age Group", line = -9, cex.main = 1.2)
+legend("bottom", legend = age_legend_labels, fill = colors, bty="n", inset = 0.1, cex = 0.8)
+
+# Pie 5: Smoking Status
+pie(smoking_status_counts,
+    labels = NA,
+    col = colors)
+
+title(main="Smoking Status", line = -9, cex.main = 1.2)
+
+legend("bottom", legend = smoking_legend_labels, fill = colors, bty="n", inset = 0.1, cex = 0.8)
+
+# Pie 6: Survived 
+pie(survived_counts,
+    labels = NA,
+    col = colors)
+    
+title(main="Survived", line = -9, cex.main = 1.2)
+
+legend("bottom", legend = survived_legend_labels, fill = colors, bty="n", inset = 0.1, cex = 0.8)
+##----------------- End Plot Pie Chart -----------------------------##
+
