@@ -49,14 +49,7 @@ ggplot(lungcancer, aes(x = survived)) +
 
 ## TREATMENT TYPE ## --------
 
-# Survival Proportion by Treatment type
-ggplot(lungcancer, aes(x = treatment_type, fill = factor(survived))) +
-  geom_bar(position = "fill") +
-  labs(title = "Survival Proportion by Treatment Type",
-       x = "Treatment Type",
-       y = "Proportion", fill = "Survived")
-
-# Survival Rate by Treatment type (**PREFERRED** )
+# Survival Rate by Treatment type
 lungcancer |>
   group_by(treatment_type) |>
   summarise(survival_rate = mean(survived)) |>
@@ -69,13 +62,6 @@ lungcancer |>
 
 
 ## SMOKING STATUS ## --------
-
-# Survival Proportion by Smoking Status
-ggplot(lungcancer, aes(x = smoking_status, fill = factor(survived))) +
-  geom_bar(position = "fill") +
-  labs(title = "Survival Proportion by Smoking Status",
-       x = "Smoking Status",
-       y = "Proportion", fill = "Survived")
 
 # Survival Rate by Smoking Status
 lungcancer |>
@@ -90,13 +76,6 @@ lungcancer |>
 
 
 ## CANCER STAGE ## --------
-
-# Survival Proportion by Cancer Stage
-ggplot(lungcancer, aes(x = cancer_stage, fill = factor(survived))) +
-  geom_bar(position = "fill") +
-  labs(title = "Survival Proportion by Cancer Stage",
-       x = "Cancer Stage",
-       y = "Proportion", fill = "Survived")
 
 # Survival Rate by Cancer Stage
 lungcancer |>
@@ -125,7 +104,7 @@ lungcancer |>
   scale_fill_manual(values = c("lightblue", "lightgreen", "lightcoral", "lightyellow"))
 
 
-## -------- Modeling -------- ##
+## -------- Logistic Regression Modeling -------- ##
 
 # Model 1: How is smoking status associated with the likelihood of survival among lung cancer patients?
 Model1 <- glm(survived ~ smoking_status, data=lungcancer, family='binomial')
@@ -140,14 +119,28 @@ summary(Model2)
 
 ## -------- Assumption Check -------- ##
 
-# Normality check for continuous variable (age) - QQ plot
-qqnorm(lungcancer$age)
-qqline(lungcancer$age, col = "red")
+par(mfrow = c(2, 1)) # for Model 1 
+par(mfrow = c(2, 1)) # for Model 2
+
+# Linearity & Independence - Residuals vs Fitted Values --------
+
+# Model 1
+plot(Model1, which = 1, main = "Residuals vs Fitted")
+# Model 2
+plot(Model2, which = 1, main = "Residuals vs Fitted")
+
+# Homoscedascity - Spread-Location plot --------
+
+# Model 1
+plot(Model1, which = 3, main = "Scale-Location")
+# Model 2
+plot(Model2, which = 3, main = "Scale-Location")
+
 
 # Multicollinearity check
 library(car)
 
-vif(Model1)
+# Model 1 only has 1 predictor so no need for multicollinearity check
 vif(Model2)
 
 ##----------------------------Pie Chart------------------------------##
@@ -193,5 +186,3 @@ for (title in names(vars)) {
   legend("bottom", legend = labels, fill=colors, bty="n", inset=0.2, cex = 1.2) # Set the features for the legends 
   
 }
-
-
