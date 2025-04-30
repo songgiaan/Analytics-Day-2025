@@ -119,29 +119,39 @@ summary(Model2)
 
 ## -------- Assumption Check -------- ##
 
-par(mfrow = c(2, 1)) # for Model 1 
-par(mfrow = c(2, 1)) # for Model 2
+## Check for any unusual strong outliers -------
 
-# Linearity & Independence - Residuals vs Fitted Values --------
+## Model 1
+which(abs(rstandard(Model1)) > 2)
+## Model 2
+which(abs(rstandard(Model2)) > 2)
+
+## Linearity & Independence - Residuals vs Fitted Values --------
 
 # Model 1
 plot(Model1, which = 1, main = "Residuals vs Fitted")
 # Model 2
 plot(Model2, which = 1, main = "Residuals vs Fitted")
 
-# Homoscedascity - Spread-Location plot --------
+## Multicollinearity check - VIF -------
+library(car)
+
+# Model 1 only has 1 predictor so no need for multicollinearity check
+# Model 2
+vif(Model2)
+
+
+## ASSUMPTION CHECKS THAT ARE NOT APPLICABLE TO LOGISTIC REGRESSION ------
+
+## Homoscedasticity - Spread-Location plot --------
 
 # Model 1
 plot(Model1, which = 3, main = "Scale-Location")
 # Model 2
 plot(Model2, which = 3, main = "Scale-Location")
 
+## Normality -------
 
-# Multicollinearity check
-library(car)
-
-# Model 1 only has 1 predictor so no need for multicollinearity check
-vif(Model2)
 
 ##----------------------------Pie Chart------------------------------##
 # Set up 2 rows and 3 columns layout for the pie charts
@@ -186,3 +196,5 @@ for (title in names(vars)) {
   legend("bottom", legend = labels, fill=colors, bty="n", inset=0.2, cex = 1.2) # Set the features for the legends 
   
 }
+
+
